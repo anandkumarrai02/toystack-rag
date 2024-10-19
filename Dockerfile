@@ -1,14 +1,11 @@
 # Use an official Python runtime as a parent image
-FROM python:3.12
+FROM python:3.12-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the current directory contents into the container
 COPY . /app
-
-# Install dependencies for building Python packages (for psycopg2)
-RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev
 
 # Install Python dependencies directly (no virtual environment needed)
 RUN pip install --upgrade pip && pip install -r requirements.txt
@@ -20,4 +17,4 @@ COPY .env /app/.env
 EXPOSE 8501
 
 # Command to run the Streamlit app
-CMD ["streamlit", "run", "appp.py"]
+CMD ["streamlit", "run", "app.py"]
