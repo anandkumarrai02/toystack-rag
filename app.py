@@ -9,6 +9,7 @@ from langchain_community.vectorstores import PGVector  # Use PGVector for Postgr
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
+from PyPDF2.errors import PdfReadError
 import psycopg2
 import uuid
 
@@ -28,12 +29,15 @@ def get_db_connection():
 session_uuid = str(uuid.uuid4())
 
 def get_pdf_text(pdf_docs):
-    text=""
+    pdf_text = ""
     for pdf in pdf_docs:
-        pdf_reader= PdfReader(pdf)
-        for page in pdf_reader.pages:
-            text+= page.extract_text()
-    return  text
+        try:
+            pdf_reader = PdfReader(pdf)
+            for page in pdf_reader.pages:
+                pdf_text += page.extract_text()
+        except PdfReadError:
+            st.error(f"Error reading PDF file: {pdf}")
+    return pdf_text
 
 
 def get_text_chunks(text):
