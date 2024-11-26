@@ -120,7 +120,7 @@ def main():
     # Sidebar
     with st.sidebar:
         # You can replace the URL below with your own logo URL or local image path
-        st.image("logo.png", use_column_width=True)
+        st.image("logo.png", use_container_width=True)
         st.markdown("---")
         
         # Navigation Menu
